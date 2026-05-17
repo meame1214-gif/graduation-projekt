@@ -3,291 +3,1298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة جسر التواصل المتكاملة</title>
-    
+    <title>جسر التواصل</title>
     <link rel="manifest" href="manifest.json">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f3e9dd;
-            --card-bg: #ffffff;
-            --header-bg: #f8f1e8;
-            --primary-text: #4a3b2f;
-            --secondary-text: #6b584a;
-            --accent-color: #8d7b68;
-            --warning: #e74c3c;
-            --success: #2ecc71;
-            --info: #3498db;
+            --pink-light: #fce8f0;
+            --pink-mid: #f7c5d9;
+            --pink-deep: #e8799e;
+            --pink-accent: #d4547f;
+            --yellow-light: #fdf8e1;
+            --yellow-mid: #f9edb0;
+            --yellow-deep: #f0d060;
+            --yellow-accent: #e6b830;
+            --white: #ffffff;
+            --text-dark: #3a2535;
+            --text-mid: #6b4a5e;
+            --text-light: #a07890;
+            --card-shadow: 0 8px 32px rgba(212, 84, 127, 0.10);
+            --card-shadow-hover: 0 16px 48px rgba(212, 84, 127, 0.18);
+            --radius: 24px;
+            --radius-sm: 14px;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            margin: 0;
             font-family: 'Cairo', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--primary-text);
+            background: linear-gradient(145deg, #fdf0f6 0%, #fffdf0 50%, #fdf0f6 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+            overflow-x: hidden;
         }
 
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px; right: -200px;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(247,197,217,0.3) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -200px; left: -200px;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(240,208,96,0.2) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== HEADER ===== */
         header {
-            background-color: var(--header-bg);
-            padding: 35px 20px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, #f9d0e3 0%, #fdf3c0 100%);
+            overflow: hidden;
+            box-shadow: 0 4px 30px rgba(212,84,127,0.12);
+        }
+
+        .header-inner {
+            position: relative;
+            padding: 45px 24px 35px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
         }
 
-        header h1 { margin: 0; font-size: 26px; font-weight: 700; }
-        header p { margin: 10px 0 0; font-size: 14px; color: var(--secondary-text); }
+        .header-deco {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
 
+        .header-deco span {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.18;
+        }
+
+        .header-deco span:nth-child(1) {
+            width: 180px; height: 180px;
+            background: var(--pink-deep);
+            top: -60px; right: -40px;
+        }
+
+        .header-deco span:nth-child(2) {
+            width: 120px; height: 120px;
+            background: var(--yellow-deep);
+            bottom: -40px; left: -30px;
+        }
+
+        .header-deco span:nth-child(3) {
+            width: 80px; height: 80px;
+            background: var(--pink-accent);
+            top: 20px; left: 15%;
+        }
+
+        .logo-icon {
+            width: 120px; height: 120px;
+            border-radius: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            animation: floatLogo 3s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 24px;
+        }
+
+        @keyframes floatLogo {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        header h1 {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 30px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--pink-accent) 0%, #c0406a 50%, var(--yellow-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 14px;
+            color: var(--text-mid);
+            font-weight: 400;
+            line-height: 1.6;
+        }
+
+        .header-tags {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212,84,127,0.2);
+            color: var(--pink-accent);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 14px;
+            border-radius: 50px;
+        }
+
+        /* ===== CONTAINER ===== */
         .container {
-            width: 90%;
-            max-width: 750px;
-            margin: 0 auto 50px auto;
+            position: relative;
+            z-index: 1;
+            width: 92%;
+            max-width: 720px;
+            margin: 28px auto 60px;
         }
 
-        .card {
-            background: var(--card-bg);
-            margin-bottom: 15px;
-            padding: 20px;
-            border-radius: 18px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
-            cursor: pointer;
-            transition: 0.3s;
+        .section-title {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+            padding-right: 4px;
         }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--white);
+            margin-bottom: 16px;
+            border-radius: var(--radius);
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1.5px solid rgba(247,197,217,0.4);
+            overflow: hidden;
+            animation: fadeUp 0.5s ease both;
+        }
+
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.10s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.20s; }
+        .card:nth-child(5) { animation-delay: 0.25s; }
+
+        .card:hover {
+            box-shadow: var(--card-shadow-hover);
+            transform: translateY(-2px);
+            border-color: rgba(212,84,127,0.25);
+        }
+
+        .card.active { border-color: rgba(212,84,127,0.35); }
 
         .card-header {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 14px;
+            padding: 20px 22px;
         }
 
-        .card h3 { margin: 0; font-size: 17px; font-weight: 600; }
-        .arrow { font-size: 12px; transition: 0.3s; color: var(--accent-color); }
+        .card-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-icon { transform: scale(1.08); }
+
+        .icon-pink   { background: linear-gradient(135deg, #fce8f0, #f7c5d9); }
+        .icon-yellow { background: linear-gradient(135deg, #fdf8e1, #f9edb0); }
+        .icon-rose   { background: linear-gradient(135deg, #fde8f0, #f5b8d0); }
+        .icon-gold   { background: linear-gradient(135deg, #fdf3d0, #f5e090); }
+        .icon-blush  { background: linear-gradient(135deg, #f8e8f5, #edc8e8); }
+
+        .card-title-group { flex: 1; }
+
+        .card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .arrow-wrap {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--pink-light);
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .arrow-wrap svg {
+            width: 14px; height: 14px;
+            stroke: var(--pink-accent);
+            transition: transform 0.3s;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .card.active .arrow-wrap { background: var(--pink-mid); }
+        .card.active .arrow-wrap svg { transform: rotate(180deg); }
 
         .desc {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.5s ease;
+            transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .card.active .desc {
-            max-height: 1500px;
-            margin-top: 15px;
-            border-top: 1px solid #f5f5f5;
-            padding-top: 15px;
-        }
+        .card.active .desc { max-height: 2200px; }
 
-        .card.active .arrow { transform: rotate(180deg); }
+        .desc-inner {
+            padding: 0 22px 22px;
+            border-top: 1px solid rgba(247,197,217,0.5);
+        }
 
         .feature-text {
-            color: var(--secondary-text);
-            line-height: 1.8;
-            font-size: 15px;
-            margin-bottom: 15px;
+            color: var(--text-mid);
+            line-height: 1.85;
+            font-size: 14px;
+            margin: 16px 0;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, var(--pink-light), var(--yellow-light));
+            border-radius: var(--radius-sm);
+            border-right: 3px solid var(--pink-deep);
         }
 
         .interactive-area {
-            background: #fdfaf6;
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px dashed #dcd0c0;
+            background: #fdfbfc;
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            border: 1.5px dashed rgba(212,84,127,0.25);
         }
 
-        video { width: 100%; border-radius: 10px; background: #000; margin-top: 10px; display: none; }
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.25s;
+        }
 
+        .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+        .btn:active { transform: scale(0.98); }
+        .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--pink-accent), #c0406a);
+            color: white;
+            box-shadow: 0 6px 20px rgba(212,84,127,0.35);
+        }
+
+        .btn-yellow {
+            background: linear-gradient(135deg, var(--yellow-accent), #d4a020);
+            color: white;
+            box-shadow: 0 6px 20px rgba(230,184,48,0.35);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e85454, #c03030);
+            color: white;
+            box-shadow: 0 6px 20px rgba(232,84,84,0.35);
+        }
+
+        .btn-green {
+            background: linear-gradient(135deg, #48c878, #30a858);
+            color: white;
+            box-shadow: 0 6px 20px rgba(72,200,120,0.3);
+            display: none;
+        }
+
+        .btn-ghost {
+            background: var(--pink-light);
+            color: var(--pink-accent);
+            border: 1.5px solid var(--pink-mid);
+            box-shadow: none;
+        }
+
+        .btn-sm {
+            width: auto;
+            display: inline-block;
+            padding: 10px 18px;
+            font-size: 13px;
+            margin-top: 0;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .btn-row .btn { flex: 1; margin-top: 0; }
+
+        /* ===== VIDEO ===== */
+        video {
+            width: 100%;
+            border-radius: var(--radius-sm);
+            background: #1a0a10;
+            margin-top: 12px;
+            display: none;
+            border: 2px solid var(--pink-mid);
+        }
+
+        /* ===== TRANSLATOR RESULT ===== */
+        .result-box {
+            margin-top: 14px;
+            background: linear-gradient(135deg, #fff5f9, #fffdf0);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            border: 1.5px solid var(--pink-mid);
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .result-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .result-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.6;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .result-text.loading {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading-dots span {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: var(--pink-accent);
+            border-radius: 50%;
+            animation: dot 1.4s infinite;
+            margin: 0 2px;
+        }
+
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dot {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .capture-preview {
+            width: 100%;
+            border-radius: var(--radius-sm);
+            margin-top: 12px;
+            display: none;
+            border: 2px solid var(--pink-mid);
+        }
+
+        .hint-text {
+            font-size: 12px;
+            color: var(--text-light);
+            text-align: center;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        /* ===== MAP ===== */
         .map-box {
-            background: #e9e0d4;
+            background: linear-gradient(135deg, #fce8f5, #fdf8e0);
             height: 200px;
-            border-radius: 10px;
+            border-radius: var(--radius-sm);
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #8d7b68;
+            border: 1.5px solid rgba(212,84,127,0.2);
+            overflow: hidden;
+        }
+
+        .map-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(212,84,127,0.06) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .map-label {
             font-size: 13px;
-            border: 1px solid #d4c4b0;
+            color: var(--text-light);
+            font-weight: 600;
+            z-index: 1;
         }
 
         .user-dot {
-            width: 14px; height: 14px; background: var(--info);
+            width: 16px; height: 16px;
+            background: linear-gradient(135deg, var(--pink-accent), #c0406a);
             border-radius: 50%; position: absolute;
-            box-shadow: 0 0 8px var(--info); animation: pulse 1.5s infinite;
+            animation: pulse 1.8s infinite;
+            z-index: 2;
         }
 
         .peer-dot {
-            width: 12px; height: 12px; background: var(--success);
-            border-radius: 50%; position: absolute; cursor: pointer;
+            width: 14px; height: 14px;
+            background: linear-gradient(135deg, #48c878, #30a858);
+            border-radius: 50%; position: absolute;
+            cursor: pointer; z-index: 2;
+            box-shadow: 0 0 0 3px rgba(72,200,120,0.3);
+            transition: transform 0.2s;
         }
 
-        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
+        .peer-dot:hover { transform: scale(1.3); }
 
-        button {
-            background: var(--accent-color);
-            color: white; border: none;
-            padding: 12px; border-radius: 10px;
-            width: 100%; font-family: 'Cairo';
-            font-weight: 600; cursor: pointer;
-            margin-top: 10px; transition: 0.2s;
+        @keyframes pulse {
+            0%   { box-shadow: 0 0 0 3px rgba(212,84,127,0.4); }
+            100% { box-shadow: 0 0 0 14px rgba(212,84,127,0); }
         }
 
-        button.help-btn { background: var(--warning); }
-        button.token-btn { background: var(--info); }
-        button.request-btn { background: var(--info); width: auto; font-size: 13px; }
+        .map-nav {
+            font-size: 13px;
+            margin-top: 12px;
+            color: var(--text-mid);
+            background: var(--pink-light);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
+        /* ===== FRIEND REQUEST ===== */
         .friend-request-box {
-            background: white; border: 1px solid #eee; border-radius: 10px;
-            padding: 12px; display: flex; align-items: center; justify-content: space-between;
-            margin-top: 15px; animation: fadeIn 0.5s;
+            background: linear-gradient(135deg, #fff5f9, #fffdf0);
+            border: 1.5px solid var(--pink-mid);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 14px;
+            animation: fadeUp 0.4s ease;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .friend-request-box span {
+            font-size: 14px;
+            color: var(--text-mid);
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        /* ===== NOTIFICATION VISUAL ===== */
+        .notif-visual {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: linear-gradient(135deg, var(--pink-light), var(--yellow-light));
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .notif-icon {
+            width: 48px; height: 48px;
+            background: linear-gradient(135deg, var(--pink-accent), var(--yellow-accent));
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .notif-text h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        .notif-text p {
+            font-size: 12px;
+            color: var(--text-mid);
+            line-height: 1.5;
+        }
+
+        /* ===== بطاقة تعريفية ===== */
+        .id-card {
+            background: linear-gradient(135deg, #fff0f6, #fffbe0);
+            border: 1.5px solid var(--pink-mid);
+            border-radius: var(--radius-sm);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .id-avatar {
+            width: 64px; height: 64px;
+            background: linear-gradient(135deg, var(--pink-accent), var(--yellow-accent));
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 12px;
+            box-shadow: 0 4px 16px rgba(212,84,127,0.3);
+        }
+        .id-name {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 18px; font-weight: 800;
+            color: var(--text-dark); margin-bottom: 6px;
+        }
+        .id-needs {
+            display: flex; flex-wrap: wrap;
+            gap: 8px; justify-content: center; margin: 14px 0;
+        }
+        .need-tag {
+            background: white;
+            border: 1.5px solid var(--pink-mid);
+            color: var(--pink-accent);
+            font-size: 13px; font-weight: 600;
+            padding: 6px 14px; border-radius: 50px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .need-tag:hover, .need-tag.active {
+            background: linear-gradient(135deg, var(--pink-accent), #c0406a);
+            color: white; border-color: transparent;
+        }
+        .show-card-btn {
+            display: none;
+            background: linear-gradient(135deg, var(--text-dark), #5a3550);
+            color: white; border: none;
+            padding: 14px 28px; border-radius: var(--radius-sm);
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px; font-weight: 700;
+            cursor: pointer; margin-top: 14px;
+            width: 100%; transition: all 0.25s;
+        }
+        .show-card-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+        /* ===== تقييم الخدمة ===== */
+        .rating-area { text-align: center; padding: 10px 0; }
+        .rating-q { font-size: 15px; color: var(--text-mid); margin-bottom: 18px; line-height: 1.6; }
+        .stars { display: flex; justify-content: center; gap: 10px; margin-bottom: 18px; }
+        .star {
+            font-size: 36px; cursor: pointer; transition: transform 0.2s;
+            filter: grayscale(1) opacity(0.4);
+        }
+        .star:hover, .star.lit { filter: none; transform: scale(1.2); }
+        .rating-feedback { display: none; animation: fadeUp 0.4s ease; }
+        .rating-feedback textarea {
+            width: 100%; padding: 12px;
+            border: 1.5px solid var(--pink-mid);
+            border-radius: var(--radius-sm);
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px; color: var(--text-dark);
+            background: #fff9fc; resize: none; outline: none;
+            height: 90px; box-sizing: border-box; transition: border-color 0.2s;
+        }
+        .rating-feedback textarea:focus { border-color: var(--pink-accent); }
+
+        /* ===== دليل بالصور ===== */
+        .photo-guide { display: flex; flex-direction: column; gap: 12px; }
+        .place-card {
+            display: flex; gap: 14px; align-items: center;
+            background: white;
+            border: 1.5px solid rgba(247,197,217,0.5);
+            border-radius: var(--radius-sm);
+            padding: 14px; cursor: pointer; transition: all 0.25s;
+        }
+        .place-card:hover {
+            border-color: var(--pink-mid);
+            transform: translateX(-3px);
+            box-shadow: 0 4px 16px rgba(212,84,127,0.12);
+        }
+        .place-photo {
+            width: 60px; height: 60px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; flex-shrink: 0;
+        }
+        .place-info { flex: 1; }
+        .place-name {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 15px; font-weight: 700;
+            color: var(--text-dark); margin-bottom: 4px;
+        }
+        .place-desc { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+        .place-dir { font-size: 12px; color: var(--pink-accent); font-weight: 600; white-space: nowrap; }
+
+        /* ===== تبويبات الخريطة ===== */
+        .tab-btn {
+            flex: 1; padding: 9px; border: 1.5px solid var(--pink-mid);
+            border-radius: 10px; background: white;
+            color: var(--text-mid); font-family: 'Cairo', sans-serif;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; margin-top: 0;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--pink-accent), #c0406a);
+            color: white; border-color: transparent;
+        }
+
+        /* ===== ملف شخصي ===== */
+        .profile-form { display: flex; flex-direction: column; gap: 14px; }
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label {
+            font-size: 13px; font-weight: 700;
+            color: var(--text-mid);
+        }
+        .form-group input, .form-group textarea {
+            padding: 11px 14px;
+            border: 1.5px solid var(--pink-mid);
+            border-radius: var(--radius-sm);
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px; color: var(--text-dark);
+            background: #fff9fc; outline: none;
+            transition: border-color 0.2s;
+            width: 100%; box-sizing: border-box;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--pink-accent); }
+        .form-group textarea { resize: none; height: 80px; }
+        .saved-msg {
+            font-size: 13px; color: #30a858;
+            text-align: center; font-weight: 600;
+            animation: fadeUp 0.3s ease;
+        }
+
+        /* ===== HELP ===== */
+        .help-pulse {
+            text-align: center;
+            padding: 8px 0 4px;
+        }
+
+        .help-pulse p {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: var(--text-light);
+            position: relative;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
 
-    <header>
+<header>
+    <div class="header-inner">
+        <div class="header-deco">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="logo-icon">🌸</div>
         <h1>جسر التواصل</h1>
         <p>المنظومة الذكية المتكاملة لدعم وتمكين فئة الصم والبكم</p>
-    </header>
+        <div class="header-tags">
+            <span class="tag">مترجم ذكي</span>
+            <span class="tag">دليل المبنى</span>
+            <span class="tag">طلب مساعدة</span>
+            <span class="tag">تواصل آمن</span>
+            <span class="tag">بطاقة تعريفية</span>
+            <span class="tag">تقييم الخدمة</span>
+        </div>
+    </div>
+</header>
 
-    <div class="container">
+<div class="container">
 
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
+    <p class="section-title">خدماتنا</p>
+
+    <!-- 1. المترجم -->
+    <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+            <div class="card-icon icon-pink">🤟</div>
+            <div class="card-title-group">
                 <h3>خليك متواصل بلغتك</h3>
-                <span class="arrow">▼</span>
+                <span class="card-subtitle">مترجم لغة الإشارة السعودية</span>
             </div>
-            <div class="desc" onclick="event.stopPropagation()">
+            <div class="arrow-wrap">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+        <div class="desc">
+            <div class="desc-inner" onclick="event.stopPropagation()">
                 <div class="feature-text">
-                    هنا تقدر تتكلم بلغتك براحة، مترجم لغة الإشارة السعودي يحول إشاراتك إلى نص أو صوت بسهولة ويخلي تواصلك أوضح وأسهل.
+                    تكلم بلغتك براحة، المترجم الذكي يحول إشاراتك إلى نص أو صوت بسهولة ويخلي تواصلك أوضح وأسهل مع الجميع.
                 </div>
                 <div class="interactive-area">
                     <video id="webcam" autoplay playsinline></video>
-                    <button onclick="startCamera()">فتح كاميرا المترجم الذكي</button>
+                    <canvas id="captureCanvas" style="display:none;"></canvas>
+                    <img id="capturePreview" class="capture-preview" alt="الصورة الملتقطة" />
+                    <div class="btn-row">
+                        <button class="btn btn-ghost" onclick="startCamera()" id="startCamBtn">📷 فتح الكاميرا</button>
+                        <button class="btn btn-primary" onclick="captureAndTranslate()" id="captureBtn" disabled>✋ ترجم إشارتي</button>
+                    </div>
+                    <p class="hint-text">افتح الكاميرا، اعمل إشارة، ثم اضغط "ترجم إشارتي"</p>
+                    <div class="result-box" id="translatorResult">
+                        <div class="result-label">النص المترجم</div>
+                        <div class="result-text" id="resultText"></div>
+                    </div>
+                    <button class="btn btn-green" id="speakBtn" onclick="speakResult()">🔊 تشغيل النص صوتاً</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
+    <!-- 2. دليل المبنى (خريطة + صور مدمجة) -->
+    <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+            <div class="card-icon icon-yellow">🗺️</div>
+            <div class="card-title-group">
                 <h3>تجول براحتك</h3>
-                <span class="arrow">▼</span>
+                <span class="card-subtitle">خريطة المبنى ودليل الأماكن</span>
             </div>
-            <div class="desc" onclick="event.stopPropagation()">
-                <div class="feature-text">
-                    خريطة تفاعلية تساعدك تتحرك داخل المكان بسهولة، مع مسارات هادئة ومصاعد بإشارات ضوئية لراحتك وأمانك.
-                </div>
-                <div class="interactive-area">
-                    <div class="map-box">
-                        <div class="user-dot" style="top:40%; right:30%;"></div>
-                        📍 خريطة المبنى التفاعلية
-                    </div>
-                    <p style="font-size: 13px; margin-top: 10px; color: var(--accent-color);">📍 التوجيه الحالي: اتجه لليمين بعد 5 أمتار للوصول للمصعد.</p>
-                </div>
+            <div class="arrow-wrap">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
         </div>
-
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
-                <h3>خلك مطمئن واطلب المساعدة</h3>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="desc" onclick="event.stopPropagation()">
+        <div class="desc">
+            <div class="desc-inner" onclick="event.stopPropagation()">
                 <div class="feature-text">
-                    زر بسيط يرسل طلب مساعدة مع تحديد موقعك مباشرة بدون أي توتر، إحنا معك دايمًا ونوصل لك الدعم بسرعة.
+                    ما تحتاج تسأل أحد، خريطة المبنى تبين وين أنتِ، ودليل الصور يوضح لك كل مكان بتعليمات سهلة وواضحة.
                 </div>
                 <div class="interactive-area">
-                    <button class="help-btn" onclick="sendHelp()">طلب المساعدة الآن</button>
-                </div>
-            </div>
-        </div>
 
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
-                <h3>لا تفوت أي تنبيه</h3>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="desc" onclick="event.stopPropagation()">
-                <div class="feature-text">
-                    يصلك كل تنبيه مهم فورًا حتى تكون مطمئن وما يفوتك أي شيء مهم. اضغط بالأسفل لتفعيل الخاصية واستلام الـ Token.
-                </div>
-                <div class="interactive-area">
-                    <button class="token-btn" onclick="getMyDeviceToken()">تفعيل التنبيهات وإظهار الـ Token</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" onclick="toggleCard(this)">
-            <div class="card-header">
-                <h3>شارك لحظاتك براحة</h3>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="desc" onclick="event.stopPropagation()">
-                <div class="feature-text">
-                    تقدر تتواصل مع أشخاص من نفس الفئة بطريقة مريحة وآمنة. ارسل طلب تواصل بسيط وبكل خصوصية دون الحاجة للاقتراب المباشر.
-                </div>
-                <div class="interactive-area">
-                    <div class="map-box" style="background: #f0f0f0;">
-                        <div class="user-dot" style="top:50%; left:50%;"></div>
-                        <div class="peer-dot" style="top:30%; left:40%;" onclick="showRequest()"></div>
-                        <span style="color: #8d7b68; font-size: 12px;">انقر على النقاط الخضراء لإرسال طلب تواصل</span>
+                    <!-- تبويبات -->
+                    <div style="display:flex; gap:8px; margin-bottom:14px;">
+                        <button class="tab-btn active" id="tab-map" onclick="switchTab('map'); event.stopPropagation();">🗺️ الخريطة</button>
+                        <button class="tab-btn" id="tab-photos" onclick="switchTab('photos'); event.stopPropagation();">📸 دليل الصور</button>
                     </div>
 
-                    <div id="requestArea" style="display: none;">
-                        <div class="friend-request-box">
-                            <span style="font-size: 14px;">👋 يوجد شخص قريب، هل تود إرسال طلب تواصل؟</span>
-                            <button class="request-btn" onclick="sendFriendRequest(this)">إرسال الطلب</button>
+                    <!-- الخريطة -->
+                    <div id="view-map">
+                        <div class="map-box">
+                            <div class="user-dot" style="top:55%; right:35%;"></div>
+                            <span class="map-label">📍 خريطة المبنى التفاعلية</span>
+                        </div>
+                        <div class="map-nav">
+                            <span>📍</span>
+                            <span>التوجيه الحالي: اتجه لليمين بعد 5 أمتار للوصول للمصعد</span>
+                        </div>
+                    </div>
+
+                    <!-- دليل الصور -->
+                    <div id="view-photos" style="display:none;">
+                        <div class="photo-guide">
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fce8f0,#f7c5d9);">🚪</div>
+                                <div class="place-info">
+                                    <div class="place-name">المدخل الرئيسي</div>
+                                    <div class="place-desc">الباب الزجاجي الكبير، يفتح تلقائياً عند الاقتراب</div>
+                                </div>
+                                <span class="place-dir">أنتِ هنا 📍</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fdf8e1,#f9edb0);">🏛️</div>
+                                <div class="place-info">
+                                    <div class="place-name">الإدارة</div>
+                                    <div class="place-desc">اتجه يساراً من المدخل، الغرفة الأولى على اليمين</div>
+                                </div>
+                                <span class="place-dir">← يساراً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#f8e8f5,#edc8e8);">🕌</div>
+                                <div class="place-info">
+                                    <div class="place-name">المصلى</div>
+                                    <div class="place-desc">الطابق الأول، اتبع اللافتة الخضراء في الممر</div>
+                                </div>
+                                <span class="place-dir">↑ الطابق الأول</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fde8f0,#f5b8d0);">🚻</div>
+                                <div class="place-info">
+                                    <div class="place-name">دورات المياه</div>
+                                    <div class="place-desc">نهاية الممر الجانبي، يوجد دورة مياه لذوي الاحتياجات</div>
+                                </div>
+                                <span class="place-dir">→ يميناً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fdf3d0,#f5e090);">⬆️</div>
+                                <div class="place-info">
+                                    <div class="place-name">المصعد</div>
+                                    <div class="place-desc">بجانب السلم الرئيسي، يحتوي على أزرار بلغة برايل</div>
+                                </div>
+                                <span class="place-dir">← يساراً</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 
-    <script>
-        function toggleCard(card) {
-            card.classList.toggle('active');
+    <!-- 3. المساعدة -->
+    <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+            <div class="card-icon icon-rose">🆘</div>
+            <div class="card-title-group">
+                <h3>خلك مطمئن واطلب المساعدة</h3>
+                <span class="card-subtitle">نداء استغاثة فوري</span>
+            </div>
+            <div class="arrow-wrap">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+        <div class="desc">
+            <div class="desc-inner" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    زر بسيط يرسل طلب مساعدة مع تحديد موقعك فوراً، إحنا معك دايماً ونوصل لك الدعم بسرعة.
+                </div>
+                <div class="interactive-area">
+                    <div class="help-pulse">
+                        <button class="btn btn-danger" onclick="sendHelp()">اضغط للمساعدة الفورية</button>
+                        <p>سيتم تحديد موقعك وإرسال الدعم إليك مباشرة</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. التنبيهات -->
+    <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+            <div class="card-icon icon-gold">🔔</div>
+            <div class="card-title-group">
+                <h3>لا تفوت أي تنبيه</h3>
+                <span class="card-subtitle">تنبيهات فورية ومخصصة</span>
+            </div>
+            <div class="arrow-wrap">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+        <div class="desc">
+            <div class="desc-inner" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    يصلك كل تنبيه مهم فوراً حتى تكون دايماً على اطلاع وما يفوتك أي شيء.
+                </div>
+                <div class="interactive-area">
+                    <div class="notif-visual">
+                        <div class="notif-icon">💌</div>
+                        <div class="notif-text">
+                            <h4>كن أول من يعلم</h4>
+                            <p>فعّل التنبيهات وخلنا نوصلك كل جديد مباشرة على جهازك</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-yellow" onclick="getMyDeviceToken()">خلنا نكون معك، فعّل تنبيهاتك الآن</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. التواصل -->
+    <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+            <div class="card-icon icon-blush">💬</div>
+            <div class="card-title-group">
+                <h3>شارك لحظاتك براحة</h3>
+                <span class="card-subtitle">تواصل آمن مع من حولك</span>
+            </div>
+            <div class="arrow-wrap">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+        <div class="desc">
+            <div class="desc-inner" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    تواصل مع أشخاص من نفس الفئة بطريقة مريحة وآمنة، ارسل طلب تواصل بخصوصية تامة.
+                </div>
+                <div class="interactive-area">
+                    <div class="map-box">
+                        <div class="user-dot" style="top:50%; left:50%;"></div>
+                        <div class="peer-dot" style="top:28%; left:38%;" onclick="showRequest(); event.stopPropagation();"></div>
+                        <div class="peer-dot" style="top:65%; left:25%;" onclick="showRequest(); event.stopPropagation();"></div>
+                        <span class="map-label">اضغط على النقاط الخضراء للتواصل</span>
+                    </div>
+                    <div id="requestArea" style="display:none;">
+                        <div class="friend-request-box">
+                            <span>👋 يوجد شخص قريب منك، هل تود إرسال طلب تواصل؟</span>
+                            <button class="btn btn-primary btn-sm" onclick="sendFriendRequest(this); event.stopPropagation();">إرسال</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. البطاقة التعريفية -->
+    <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+            <div class="card-icon icon-yellow">🪪</div>
+            <div class="card-title-group">
+                <h3>عرّف بنفسك بكل ثقة</h3>
+                <span class="card-subtitle">بطاقتك التعريفية الرقمية</span>
+            </div>
+            <div class="arrow-wrap">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+        <div class="desc">
+            <div class="desc-inner" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    ما تحتاج تشرح أو تتعب، بطاقتك تقول كل شيء. اختر احتياجاتك واعرضها للموظف بضغطة وحدة، نحن هنا نسهّل عليك كل خطوة.
+                </div>
+                <div class="interactive-area">
+                    <div class="id-card">
+                        <div class="id-avatar">🧑</div>
+                        <div class="id-name">بطاقتي التعريفية</div>
+                        <p style="font-size:13px; color:var(--text-light); margin-bottom:4px;">اختر احتياجاتك:</p>
+                        <div class="id-needs">
+                            <span class="need-tag" onclick="toggleNeed(this)">أصم / بكم</span>
+                            <span class="need-tag" onclick="toggleNeed(this)">أحتاج مترجم</span>
+                            <span class="need-tag" onclick="toggleNeed(this)">أحتاج مساعدة</span>
+                            <span class="need-tag" onclick="toggleNeed(this)">أحتاج كرسي متحرك</span>
+                            <span class="need-tag" onclick="toggleNeed(this)">أحتاج وقتاً إضافياً</span>
+                            <span class="need-tag" onclick="toggleNeed(this)">أرجو التحدث ببطء</span>
+                        </div>
+                        <button class="show-card-btn" id="showCardBtn" onclick="showMyCard()">عرض بطاقتي للموظف</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. تقييم الخدمة -->
+    <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+            <div class="card-icon icon-pink">⭐</div>
+            <div class="card-title-group">
+                <h3>رأيك يهمنا كثير</h3>
+                <span class="card-subtitle">قيّم تجربتك معنا اليوم</span>
+            </div>
+            <div class="arrow-wrap">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+        <div class="desc">
+            <div class="desc-inner" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    رأيك هو اللي يخلينا نتحسن ونكون أفضل لك ولكل من يأتي بعدك. شاركنا تجربتك بصدق، كل كلمة تفرق معنا.
+                </div>
+                <div class="interactive-area">
+                    <div class="rating-area">
+                        <p class="rating-q">كيف كانت تجربتك اليوم؟</p>
+                        <div class="stars" id="starsRow">
+                            <span class="star" onclick="rateStar(1)">⭐</span>
+                            <span class="star" onclick="rateStar(2)">⭐</span>
+                            <span class="star" onclick="rateStar(3)">⭐</span>
+                            <span class="star" onclick="rateStar(4)">⭐</span>
+                            <span class="star" onclick="rateStar(5)">⭐</span>
+                        </div>
+                        <div class="rating-feedback" id="ratingFeedback">
+                            <textarea placeholder="هل تودين إضافة أي ملاحظة؟ نحن نسمعك..."></textarea>
+                            <button class="btn btn-primary" onclick="submitRating()" style="margin-top:10px;">أرسل تقييمي</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. بطاقة المعلومات الشخصية -->
+    <div class="card" onclick="toggleCard(this)">
+        <div class="card-header">
+            <div class="card-icon icon-blush">👤</div>
+            <div class="card-title-group">
+                <h3>ملفي الشخصي</h3>
+                <span class="card-subtitle">معلوماتك محفوظة دائماً معك</span>
+            </div>
+            <div class="arrow-wrap">
+                <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+        <div class="desc">
+            <div class="desc-inner" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    عبّئ معلوماتك مرة وحدة وتنحفظ على جهازك، في أي وقت تحتاج تعرّف بنفسك تلقى كل شيء جاهز وبانتظارك.
+                </div>
+                <div class="interactive-area">
+                    <div class="profile-form">
+                        <div class="form-group">
+                            <label>الاسم الكامل</label>
+                            <input type="text" id="pf-name" placeholder="اكتب اسمك هنا..." oninput="saveProfile()" />
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الجوال</label>
+                            <input type="tel" id="pf-phone" placeholder="05XXXXXXXX" oninput="saveProfile()" />
+                        </div>
+                        <div class="form-group">
+                            <label>رقم الهوية (اختياري)</label>
+                            <input type="text" id="pf-id" placeholder="10 أرقام" oninput="saveProfile()" />
+                        </div>
+                        <div class="form-group">
+                            <label>شخص للتواصل في حالات الطوارئ</label>
+                            <input type="text" id="pf-emergency" placeholder="الاسم ورقم الجوال" oninput="saveProfile()" />
+                        </div>
+                        <div class="form-group">
+                            <label>ملاحظات طبية أو احتياجات خاصة</label>
+                            <textarea id="pf-notes" placeholder="مثال: أحتاج مترجم لغة إشارة، لديّ حساسية من..." oninput="saveProfile()"></textarea>
+                        </div>
+                        <div id="pf-saved-msg" class="saved-msg" style="display:none;">✅ تم حفظ معلوماتك تلقائياً</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    <p>جسر التواصل &mdash; نحو مجتمع أكثر شمولاً 🌸</p>
+</footer>
+
+<script>
+    // ===== مفتاح API (ضعي مفتاحك هنا) =====
+    const CLAUDE_API_KEY = 'ضعي_مفتاحك_هنا';
+
+    function toggleCard(card) {
+        card.classList.toggle('active');
+    }
+
+    let stream = null;
+
+    async function startCamera() {
+        const video = document.getElementById('webcam');
+        const btn = document.getElementById('startCamBtn');
+        const captureBtn = document.getElementById('captureBtn');
+
+        if (stream) {
+            stream.getTracks().forEach(t => t.stop());
+            stream = null;
+            video.style.display = 'none';
+            btn.textContent = '📷 فتح الكاميرا';
+            captureBtn.disabled = true;
+            return;
         }
 
-        async function startCamera() {
-            const video = document.getElementById('webcam');
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                video.srcObject = stream;
-                video.style.display = 'block';
-            } catch (err) { alert("عذراً، الكاميرا لا تعمل أو لا يوجد إذن وصول."); }
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+            video.srcObject = stream;
+            video.style.display = 'block';
+            btn.textContent = '⏹ إيقاف الكاميرا';
+            captureBtn.disabled = false;
+        } catch (err) {
+            alert("عذراً، الكاميرا لا تعمل أو لا يوجد إذن وصول.");
         }
+    }
 
-        function sendHelp() { 
-            alert("تم إرسال نداء استغاثة! تم تحديد موقعك وسيصلك الموظف فوراً."); 
-        }
-        
-        async function getMyDeviceToken() {
-            if (!("Notification" in window)) {
-                alert("المتصفح لا يدعم التنبيهات.");
-                return;
-            }
-            const p = await Notification.requestPermission();
-            if(p === "granted") {
-                alert("سيظهر الـ Token هنا فور ربط Firebase بالصفحة.");
-            } else {
-                alert("يرجى السماح بالتنبيهات.");
-            }
-        }
+    async function captureAndTranslate() {
+        const video = document.getElementById('webcam');
+        const canvas = document.getElementById('captureCanvas');
+        const preview = document.getElementById('capturePreview');
+        const resultDiv = document.getElementById('translatorResult');
+        const resultText = document.getElementById('resultText');
+        const speakBtn = document.getElementById('speakBtn');
 
-        function showRequest() {
-            document.getElementById('requestArea').style.display = 'block';
-        }
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
 
-        function sendFriendRequest(btn) {
-            btn.innerHTML = "✓ تم الإرسال";
-            btn.style.background = "#2ecc71";
-            btn.disabled = true;
-            setTimeout(() => {
-                alert("تم إرسال طلب التواصل بنجاح! ستصلك إشارة اهتزازية فور موافقة الطرف الآخر.");
-            }, 300);
+        const base64Image = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+        preview.src = 'data:image/jpeg;base64,' + base64Image;
+        preview.style.display = 'block';
+
+        resultDiv.style.display = 'block';
+        resultText.className = 'result-text loading';
+        resultText.innerHTML = 'جاري تحليل الإشارة <span class="loading-dots"><span></span><span></span><span></span></span>';
+        speakBtn.style.display = 'none';
+
+        try {
+            const response = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': CLAUDE_API_KEY,
+                    'anthropic-version': '2023-06-01',
+                    'anthropic-dangerous-direct-browser-access': 'true'
+                },
+                body: JSON.stringify({
+                    model: 'claude-opus-4-5',
+                    max_tokens: 300,
+                    messages: [{
+                        role: 'user',
+                        content: [
+                            { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: base64Image } },
+                            { type: 'text', text: `أنت مترجم متخصص في لغة الإشارة السعودية. انظر للصورة وحدد:
+1. هل تظهر يد أو يدان تعملان إشارة؟
+2. إذا نعم، ما هي الإشارة أو الحرف أو الكلمة الأقرب في لغة الإشارة السعودية؟
+3. اكتب النص المترجم بشكل مختصر وواضح.
+إذا لم تظهر إشارة واضحة اكتب: "لم أتعرف على إشارة واضحة، حاول مرة أخرى"
+أجب بالعربية فقط، بدون شرح طويل.` }
+                        ]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            if (data.content && data.content[0]) {
+                resultText.className = 'result-text';
+                resultText.textContent = data.content[0].text;
+                speakBtn.style.display = 'block';
+            } else { throw new Error(); }
+        } catch {
+            resultText.className = 'result-text';
+            resultText.textContent = '⚠️ حدث خطأ، تأكد من مفتاح API وحاول مرة أخرى.';
         }
-    </script>
+    }
+
+    function speakResult() {
+        const text = document.getElementById('resultText').textContent;
+        if (!text || text.includes('⚠️')) return;
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ar-SA';
+        utter.rate = 0.88;
+        window.speechSynthesis.speak(utter);
+    }
+
+    function sendHelp() {
+        alert("تم إرسال نداء الاستغاثة! تم تحديد موقعك وسيصلك الموظف فوراً.");
+    }
+
+    async function getMyDeviceToken() {
+        if (!("Notification" in window)) { alert("المتصفح لا يدعم التنبيهات."); return; }
+        const p = await Notification.requestPermission();
+        if (p === "granted") {
+            new Notification("جسر التواصل 🌸", { body: "أهلاً! تم تفعيل التنبيهات بنجاح. خلنا نكون معك دائماً." });
+        } else {
+            alert("يرجى السماح بالتنبيهات للاستفادة من الخدمة.");
+        }
+    }
+
+    function showRequest() {
+        document.getElementById('requestArea').style.display = 'block';
+    }
+
+    function sendFriendRequest(btn) {
+        btn.textContent = "✓ تم";
+        btn.style.background = 'linear-gradient(135deg, #48c878, #30a858)';
+        btn.disabled = true;
+        setTimeout(() => { alert("تم إرسال طلب التواصل بنجاح! ستصلك إشارة فور موافقة الطرف الآخر."); }, 300);
+    }
+
+    // ===== تبويبات الخريطة =====
+    function switchTab(tab) {
+        document.getElementById('view-map').style.display = tab === 'map' ? 'block' : 'none';
+        document.getElementById('view-photos').style.display = tab === 'photos' ? 'block' : 'none';
+        document.getElementById('tab-map').classList.toggle('active', tab === 'map');
+        document.getElementById('tab-photos').classList.toggle('active', tab === 'photos');
+    }
+
+    // ===== الملف الشخصي =====
+    function saveProfile() {
+        const data = {
+            name: document.getElementById('pf-name').value,
+            phone: document.getElementById('pf-phone').value,
+            id: document.getElementById('pf-id').value,
+            emergency: document.getElementById('pf-emergency').value,
+            notes: document.getElementById('pf-notes').value,
+        };
+        localStorage.setItem('userProfile', JSON.stringify(data));
+        const msg = document.getElementById('pf-saved-msg');
+        msg.style.display = 'block';
+        clearTimeout(window._saveTimer);
+        window._saveTimer = setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    }
+
+    function loadProfile() {
+        const data = JSON.parse(localStorage.getItem('userProfile') || '{}');
+        if (data.name)      document.getElementById('pf-name').value = data.name;
+        if (data.phone)     document.getElementById('pf-phone').value = data.phone;
+        if (data.id)        document.getElementById('pf-id').value = data.id;
+        if (data.emergency) document.getElementById('pf-emergency').value = data.emergency;
+        if (data.notes)     document.getElementById('pf-notes').value = data.notes;
+    }
+
+    window.addEventListener('load', loadProfile);
+
+    // ===== البطاقة التعريفية =====
+    function toggleNeed(tag) {
+        tag.classList.toggle('active');
+        const anyActive = document.querySelectorAll('.need-tag.active').length > 0;
+        document.getElementById('showCardBtn').style.display = anyActive ? 'block' : 'none';
+    }
+
+    function showMyCard() {
+        const selected = [...document.querySelectorAll('.need-tag.active')].map(t => t.textContent).join('  |  ');
+        alert(`بطاقتك جاهزة للعرض 🌸\n\n${selected}\n\nاعرض هذه الشاشة للموظف.`);
+    }
+
+    // ===== تقييم الخدمة =====
+    function rateStar(n) {
+        const stars = document.querySelectorAll('.star');
+        stars.forEach((s, i) => s.classList.toggle('lit', i < n));
+        document.getElementById('ratingFeedback').style.display = 'block';
+    }
+
+    function submitRating() {
+        const stars = document.querySelectorAll('.star.lit').length;
+        alert(`شكراً لك من القلب 🌸\nتقييمك (${stars} نجوم) وصلنا وسيساعدنا نكون أفضل لك دائماً.`);
+        document.querySelectorAll('.star').forEach(s => s.classList.remove('lit'));
+        document.getElementById('ratingFeedback').style.display = 'none';
+    }
+</script>
+
 </body>
 </html>
