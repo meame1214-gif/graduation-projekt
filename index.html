@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة جسر التواصل المتكاملة</title>
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f3e9dd;
+            --card-bg: #ffffff;
+            --header-bg: #f8f1e8;
+            --primary-text: #4a3b2f;
+            --secondary-text: #6b584a;
+            --accent-color: #8d7b68;
+            --warning: #e74c3c;
+            --success: #2ecc71;
+            --info: #3498db;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+        }
+
+        header {
+            background-color: var(--header-bg);
+            padding: 35px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+        }
+
+        header h1 { margin: 0; font-size: 26px; font-weight: 700; }
+        header p { margin: 10px 0 0; font-size: 14px; color: var(--secondary-text); }
+
+        .container {
+            width: 90%;
+            max-width: 750px;
+            margin: 0 auto 50px auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 18px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card h3 { margin: 0; font-size: 17px; font-weight: 600; }
+        .arrow { font-size: 12px; transition: 0.3s; color: var(--accent-color); }
+
+        .desc {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .card.active .desc {
+            max-height: 1500px;
+            margin-top: 15px;
+            border-top: 1px solid #f5f5f5;
+            padding-top: 15px;
+        }
+
+        .card.active .arrow { transform: rotate(180deg); }
+
+        .feature-text {
+            color: var(--secondary-text);
+            line-height: 1.8;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .interactive-area {
+            background: #fdfaf6;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px dashed #dcd0c0;
+        }
+
+        video { width: 100%; border-radius: 10px; background: #000; margin-top: 10px; display: none; }
+
+        .map-box {
+            background: #e9e0d4;
+            height: 200px;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8d7b68;
+            font-size: 13px;
+            border: 1px solid #d4c4b0;
+        }
+
+        .user-dot {
+            width: 14px; height: 14px; background: var(--info);
+            border-radius: 50%; position: absolute;
+            box-shadow: 0 0 8px var(--info); animation: pulse 1.5s infinite;
+        }
+
+        .peer-dot {
+            width: 12px; height: 12px; background: var(--success);
+            border-radius: 50%; position: absolute; cursor: pointer;
+        }
+
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.2); opacity: 0; } }
+
+        button {
+            background: var(--accent-color);
+            color: white; border: none;
+            padding: 12px; border-radius: 10px;
+            width: 100%; font-family: 'Cairo';
+            font-weight: 600; cursor: pointer;
+            margin-top: 10px; transition: 0.2s;
+        }
+
+        button.help-btn { background: var(--warning); }
+        button.token-btn { background: var(--info); }
+        button.request-btn { background: var(--info); width: auto; font-size: 13px; }
+
+        .friend-request-box {
+            background: white; border: 1px solid #eee; border-radius: 10px;
+            padding: 12px; display: flex; align-items: center; justify-content: space-between;
+            margin-top: 15px; animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>جسر التواصل</h1>
+        <p>المنظومة الذكية المتكاملة لدعم وتمكين فئة الصم والبكم</p>
+    </header>
+
+    <div class="container">
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>خليك متواصل بلغتك</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="desc" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    هنا تقدر تتكلم بلغتك براحة، مترجم لغة الإشارة السعودي يحول إشاراتك إلى نص أو صوت بسهولة ويخلي تواصلك أوضح وأسهل.
+                </div>
+                <div class="interactive-area">
+                    <video id="webcam" autoplay playsinline></video>
+                    <button onclick="startCamera()">فتح كاميرا المترجم الذكي</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>تجول براحتك</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="desc" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    خريطة تفاعلية تساعدك تتحرك داخل المكان بسهولة، مع مسارات هادئة ومصاعد بإشارات ضوئية لراحتك وأمانك.
+                </div>
+                <div class="interactive-area">
+                    <div class="map-box">
+                        <div class="user-dot" style="top:40%; right:30%;"></div>
+                        📍 خريطة المبنى التفاعلية
+                    </div>
+                    <p style="font-size: 13px; margin-top: 10px; color: var(--accent-color);">📍 التوجيه الحالي: اتجه لليمين بعد 5 أمتار للوصول للمصعد.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>خلك مطمئن واطلب المساعدة</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="desc" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    زر بسيط يرسل طلب مساعدة مع تحديد موقعك مباشرة بدون أي توتر، إحنا معك دايمًا ونوصل لك الدعم بسرعة.
+                </div>
+                <div class="interactive-area">
+                    <button class="help-btn" onclick="sendHelp()">طلب المساعدة الآن</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>لا تفوت أي تنبيه</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="desc" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    يصلك كل تنبيه مهم فورًا حتى تكون مطمئن وما يفوتك أي شيء مهم. اضغط بالأسفل لتفعيل الخاصية واستلام الـ Token.
+                </div>
+                <div class="interactive-area">
+                    <button class="token-btn" onclick="getMyDeviceToken()">تفعيل التنبيهات وإظهار الـ Token</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="toggleCard(this)">
+            <div class="card-header">
+                <h3>شارك لحظاتك براحة</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="desc" onclick="event.stopPropagation()">
+                <div class="feature-text">
+                    تقدر تتواصل مع أشخاص من نفس الفئة بطريقة مريحة وآمنة. ارسل طلب تواصل بسيط وبكل خصوصية دون الحاجة للاقتراب المباشر.
+                </div>
+                <div class="interactive-area">
+                    <div class="map-box" style="background: #f0f0f0;">
+                        <div class="user-dot" style="top:50%; left:50%;"></div>
+                        <div class="peer-dot" style="top:30%; left:40%;" onclick="showRequest()"></div>
+                        <span style="color: #8d7b68; font-size: 12px;">انقر على النقاط الخضراء لإرسال طلب تواصل</span>
+                    </div>
+
+                    <div id="requestArea" style="display: none;">
+                        <div class="friend-request-box">
+                            <span style="font-size: 14px;">👋 يوجد شخص قريب، هل تود إرسال طلب تواصل؟</span>
+                            <button class="request-btn" onclick="sendFriendRequest(this)">إرسال الطلب</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleCard(card) {
+            card.classList.toggle('active');
+        }
+
+        async function startCamera() {
+            const video = document.getElementById('webcam');
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.style.display = 'block';
+            } catch (err) { alert("عذراً، الكاميرا لا تعمل أو لا يوجد إذن وصول."); }
+        }
+
+        function sendHelp() { 
+            alert("تم إرسال نداء استغاثة! تم تحديد موقعك وسيصلك الموظف فوراً."); 
+        }
+        
+        async function getMyDeviceToken() {
+            if (!("Notification" in window)) {
+                alert("المتصفح لا يدعم التنبيهات.");
+                return;
+            }
+            const p = await Notification.requestPermission();
+            if(p === "granted") {
+                alert("سيظهر الـ Token هنا فور ربط Firebase بالصفحة.");
+            } else {
+                alert("يرجى السماح بالتنبيهات.");
+            }
+        }
+
+        function showRequest() {
+            document.getElementById('requestArea').style.display = 'block';
+        }
+
+        function sendFriendRequest(btn) {
+            btn.innerHTML = "✓ تم الإرسال";
+            btn.style.background = "#2ecc71";
+            btn.disabled = true;
+            setTimeout(() => {
+                alert("تم إرسال طلب التواصل بنجاح! ستصلك إشارة اهتزازية فور موافقة الطرف الآخر.");
+            }, 300);
+        }
+    </script>
+</body>
+</html>
