@@ -642,8 +642,7 @@
         .rating-feedback textarea:focus { border-color: var(--pink-accent); }
 
         /* ===== دليل بالصور ===== */
-        .photo-guide { display: flex; flex-direction: column; gap: 12px; }
-        .place-card {
+        .photo-guide { display: flex; flex-direction: column; gap: 12px; }        .place-card {
             display: flex; gap: 14px; align-items: center;
             background: white;
             border: 1.5px solid rgba(247,197,217,0.5);
@@ -736,9 +735,87 @@
             position: relative;
             z-index: 1;
         }
+
+        /* ===== TOAST إشعار داخلي ===== */
+        .toast {
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: white;
+            border-radius: 24px;
+            padding: 28px 24px;
+            width: 85%;
+            max-width: 340px;
+            box-shadow: 0 20px 60px rgba(212,84,127,0.25);
+            border: 2px solid var(--pink-mid);
+            z-index: 9999;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: all;
+        }
+
+        .toast-icon {
+            font-size: 44px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .toast-msg {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+            line-height: 1.7;
+            font-family: 'Tajawal', sans-serif;
+            margin-bottom: 18px;
+        }
+
+        .toast-close {
+            background: linear-gradient(135deg, var(--pink-accent), #c0406a);
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .toast-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(58,37,53,0.3);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .toast-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
     </style>
 </head>
 <body>
+
+<!-- Toast Overlay -->
+<div class="toast-overlay" id="toastOverlay" onclick="closeToast()"></div>
+
+<!-- Toast -->
+<div class="toast" id="toastBox">
+    <span class="toast-icon" id="toastIcon">🌸</span>
+    <div class="toast-msg" id="toastMsg"></div>
+    <button class="toast-close" onclick="closeToast()">حسناً</button>
+</div>
 
 <header>
     <div class="header-inner">
@@ -832,54 +909,203 @@
                         </div>
                         <div class="map-nav">
                             <span>📍</span>
-                            <span>التوجيه الحالي: اتجه لليمين بعد 5 أمتار للوصول للمصعد</span>
+                            <span>التوجيه الحالي: اتجه للأمام للوصول للسلم</span>
                         </div>
                     </div>
 
                     <!-- دليل الصور -->
                     <div id="view-photos" style="display:none;">
-                        <div class="photo-guide">
+
+                        <!-- تبويب الدورين -->
+                        <div style="display:flex; gap:8px; margin-bottom:14px;">
+                            <button class="tab-btn active" id="floor1-btn" onclick="switchFloor('floor1'); event.stopPropagation();">🏫 الدور الأول</button>
+                            <button class="tab-btn" id="floor2-btn" onclick="switchFloor('floor2'); event.stopPropagation();">🏢 الدور الثاني</button>
+                        </div>
+
+                        <!-- الدور الأول -->
+                        <div id="floor1" class="photo-guide">
                             <div class="place-card" onclick="event.stopPropagation()">
                                 <div class="place-photo" style="background:linear-gradient(135deg,#fce8f0,#f7c5d9);">🚪</div>
                                 <div class="place-info">
                                     <div class="place-name">المدخل الرئيسي</div>
-                                    <div class="place-desc">الباب الزجاجي الكبير، يفتح تلقائياً عند الاقتراب</div>
+                                    <div class="place-desc">مدخل المدرسة الرئيسي على اليمين عند الدخول</div>
                                 </div>
                                 <span class="place-dir">أنتِ هنا 📍</span>
                             </div>
                             <div class="place-card" onclick="event.stopPropagation()">
                                 <div class="place-photo" style="background:linear-gradient(135deg,#fdf8e1,#f9edb0);">🏛️</div>
                                 <div class="place-info">
-                                    <div class="place-name">الإدارة</div>
-                                    <div class="place-desc">اتجه يساراً من المدخل، الغرفة الأولى على اليمين</div>
+                                    <div class="place-name">الأداريات</div>
+                                    <div class="place-desc">في الجهة اليمنى بجانب المدخل الرئيسي مباشرة</div>
                                 </div>
-                                <span class="place-dir">← يساراً</span>
+                                <span class="place-dir">← يميناً</span>
                             </div>
                             <div class="place-card" onclick="event.stopPropagation()">
-                                <div class="place-photo" style="background:linear-gradient(135deg,#f8e8f5,#edc8e8);">🕌</div>
+                                <div class="place-photo" style="background:linear-gradient(135deg,#d4f0e0,#a8e0c0);">👩‍💼</div>
                                 <div class="place-info">
-                                    <div class="place-name">المصلى</div>
-                                    <div class="place-desc">الطابق الأول، اتبع اللافتة الخضراء في الممر</div>
+                                    <div class="place-name">الوكيلة</div>
+                                    <div class="place-desc">بجانب الأداريات في الجهة اليمنى</div>
                                 </div>
-                                <span class="place-dir">↑ الطابق الأول</span>
+                                <span class="place-dir">← يميناً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#d4e8f0,#a8c8e0);">🏢</div>
+                                <div class="place-info">
+                                    <div class="place-name">الأدارة</div>
+                                    <div class="place-desc">في الجهة العليا اليسرى بجانب المقصف</div>
+                                </div>
+                                <span class="place-dir">↑ يساراً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#f0e8d4,#e0c8a8);">🍽️</div>
+                                <div class="place-info">
+                                    <div class="place-name">المقصف</div>
+                                    <div class="place-desc">في الجهة العليا بجانب الأدارة</div>
+                                </div>
+                                <span class="place-dir">↑ يساراً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#f8e8f5,#edc8e8);">👩‍🏫</div>
+                                <div class="place-info">
+                                    <div class="place-name">غرف المعلمات (1، 2، 3)</div>
+                                    <div class="place-desc">على الجانبين اليمين واليسار داخل الفناء</div>
+                                </div>
+                                <span class="place-dir">← يميناً / يساراً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#e8d4f0,#c8a8e0);">🔬</div>
+                                <div class="place-info">
+                                    <div class="place-name">معلم العلوم المتوسطة</div>
+                                    <div class="place-desc">في الجهة اليسرى العليا</div>
+                                </div>
+                                <span class="place-dir">↑ يساراً</span>
                             </div>
                             <div class="place-card" onclick="event.stopPropagation()">
                                 <div class="place-photo" style="background:linear-gradient(135deg,#fde8f0,#f5b8d0);">🚻</div>
                                 <div class="place-info">
-                                    <div class="place-name">دورات المياه</div>
-                                    <div class="place-desc">نهاية الممر الجانبي، يوجد دورة مياه لذوي الاحتياجات</div>
+                                    <div class="place-name">دورة مياه الطالبات</div>
+                                    <div class="place-desc">في الجهة اليسرى السفلى</div>
                                 </div>
-                                <span class="place-dir">→ يميناً</span>
+                                <span class="place-dir">↓ يساراً</span>
                             </div>
                             <div class="place-card" onclick="event.stopPropagation()">
-                                <div class="place-photo" style="background:linear-gradient(135deg,#fdf3d0,#f5e090);">⬆️</div>
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fdf3d0,#f5e090);">📚</div>
                                 <div class="place-info">
-                                    <div class="place-name">المصعد</div>
-                                    <div class="place-desc">بجانب السلم الرئيسي، يحتوي على أزرار بلغة برايل</div>
+                                    <div class="place-name">فصول دراسية (9، 10، 11)</div>
+                                    <div class="place-desc">في الجهة السفلى من الدور الأول</div>
                                 </div>
-                                <span class="place-dir">← يساراً</span>
+                                <span class="place-dir">↓ أسفل</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#f0f0f0,#d8d8d8);">🛡️</div>
+                                <div class="place-info">
+                                    <div class="place-name">غرفة الحارس</div>
+                                    <div class="place-desc">عند المدخل الخارجي على اليمين</div>
+                                </div>
+                                <span class="place-dir">← المدخل الخارجي</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fdf3d0,#f5e090);">🪜</div>
+                                <div class="place-info">
+                                    <div class="place-name">السلم للدور الثاني</div>
+                                    <div class="place-desc">في الجهة الأمامية، يوصلك للدور الثاني</div>
+                                </div>
+                                <span class="place-dir">↑ للأمام</span>
                             </div>
                         </div>
+
+                        <!-- الدور الثاني -->
+                        <div id="floor2" class="photo-guide" style="display:none;">
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fce8f0,#f7c5d9);">🖥️</div>
+                                <div class="place-info">
+                                    <div class="place-name">معمل الثانوي</div>
+                                    <div class="place-desc">في الجهة العليا اليسرى من الدور الثاني</div>
+                                </div>
+                                <span class="place-dir">↑ يساراً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fdf8e1,#f9edb0);">🎓</div>
+                                <div class="place-info">
+                                    <div class="place-name">التدريب</div>
+                                    <div class="place-desc">بجانب معمل الثانوي في الجهة العليا</div>
+                                </div>
+                                <span class="place-dir">↑ يساراً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#d4f0e0,#a8e0c0);">📖</div>
+                                <div class="place-info">
+                                    <div class="place-name">مصادر التعلم</div>
+                                    <div class="place-desc">في الجهة العليا الوسط</div>
+                                </div>
+                                <span class="place-dir">↑ وسط</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#f0e8d4,#e0c8a8);">🎯</div>
+                                <div class="place-info">
+                                    <div class="place-name">مرفق لنادي</div>
+                                    <div class="place-desc">في الجهة العليا اليمنى</div>
+                                </div>
+                                <span class="place-dir">↑ يميناً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#d4e8f0,#a8c8e0);">💬</div>
+                                <div class="place-info">
+                                    <div class="place-name">إرشاد طلابي</div>
+                                    <div class="place-desc">في الجهة اليمنى بجانب مرفق لنادي</div>
+                                </div>
+                                <span class="place-dir">← يميناً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#f8e8f5,#edc8e8);">📝</div>
+                                <div class="place-info">
+                                    <div class="place-name">فصل ثالث ثانوي</div>
+                                    <div class="place-desc">في الجهة اليمنى من الدور الثاني</div>
+                                </div>
+                                <span class="place-dir">← يميناً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#e8d4f0,#c8a8e0);">💻</div>
+                                <div class="place-info">
+                                    <div class="place-name">معمل حاسب الثانوي</div>
+                                    <div class="place-desc">في الجهة اليمنى أسفل فصل الثالث ثانوي</div>
+                                </div>
+                                <span class="place-dir">← يميناً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fdf3d0,#f5e090);">💻</div>
+                                <div class="place-info">
+                                    <div class="place-name">معمل حاسب المتوسط</div>
+                                    <div class="place-desc">في الجهة السفلى اليمنى</div>
+                                </div>
+                                <span class="place-dir">↓ يميناً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fde8f0,#f5b8d0);">🚻</div>
+                                <div class="place-info">
+                                    <div class="place-name">دورة مياه الطالبات</div>
+                                    <div class="place-desc">في الجهة السفلى اليسرى</div>
+                                </div>
+                                <span class="place-dir">↓ يساراً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#f0f0f0,#d8d8d8);">📦</div>
+                                <div class="place-info">
+                                    <div class="place-name">مستودع 2</div>
+                                    <div class="place-desc">في الجهة اليسرى السفلى</div>
+                                </div>
+                                <span class="place-dir">↓ يساراً</span>
+                            </div>
+                            <div class="place-card" onclick="event.stopPropagation()">
+                                <div class="place-photo" style="background:linear-gradient(135deg,#fce8f0,#f7c5d9);">📚</div>
+                                <div class="place-info">
+                                    <div class="place-name">فصول دراسية</div>
+                                    <div class="place-desc">موزعة على الجانبين الأيسر والسفلي</div>
+                                </div>
+                                <span class="place-dir">← يساراً / ↓ أسفل</span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -1209,8 +1435,35 @@
         window.speechSynthesis.speak(utter);
     }
 
+    function notify(msg, icon) {
+        // اهتزاز
+        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        // صوت
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.connect(g); g.connect(ctx.destination);
+            o.frequency.value = 520;
+            g.gain.setValueAtTime(0.3, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+            o.start(ctx.currentTime);
+            o.stop(ctx.currentTime + 0.6);
+        } catch(e) {}
+        // Toast
+        document.getElementById('toastMsg').textContent = msg;
+        document.getElementById('toastIcon').textContent = icon || '🌸';
+        document.getElementById('toastBox').classList.add('show');
+        document.getElementById('toastOverlay').classList.add('show');
+    }
+
+    function closeToast() {
+        document.getElementById('toastBox').classList.remove('show');
+        document.getElementById('toastOverlay').classList.remove('show');
+    }
+
     function sendHelp() {
-        alert("تم إرسال نداء الاستغاثة! تم تحديد موقعك وسيصلك الموظف فوراً.");
+        notify("تم إرسال طلبك للموظف وهو قادم إليكِ الآن، لا تقلقي إحنا معك دائماً 💛", "🆘");
     }
 
     async function getMyDeviceToken() {
@@ -1218,6 +1471,7 @@
         const p = await Notification.requestPermission();
         if (p === "granted") {
             new Notification("جسر التواصل 🌸", { body: "أهلاً! تم تفعيل التنبيهات بنجاح. خلنا نكون معك دائماً." });
+            notify("أهلاً! تم تفعيل التنبيهات بنجاح، خلنا نكون معك دائماً 🌸", "🔔");
         } else {
             alert("يرجى السماح بالتنبيهات للاستفادة من الخدمة.");
         }
@@ -1231,7 +1485,14 @@
         btn.textContent = "✓ تم";
         btn.style.background = 'linear-gradient(135deg, #48c878, #30a858)';
         btn.disabled = true;
-        setTimeout(() => { alert("تم إرسال طلب التواصل بنجاح! ستصلك إشارة فور موافقة الطرف الآخر."); }, 300);
+        setTimeout(() => { notify("تم إرسال طلب التواصل بنجاح! بانتظار موافقته، سوف يتم إعلامك فور الرد 🌸", "👋"); }, 300);
+    }
+
+    function switchFloor(floor) {
+        document.getElementById('floor1').style.display = floor === 'floor1' ? 'flex' : 'none';
+        document.getElementById('floor2').style.display = floor === 'floor2' ? 'flex' : 'none';
+        document.getElementById('floor1-btn').classList.toggle('active', floor === 'floor1');
+        document.getElementById('floor2-btn').classList.toggle('active', floor === 'floor2');
     }
 
     // ===== تبويبات الخريطة =====
@@ -1276,11 +1537,6 @@
         document.getElementById('showCardBtn').style.display = anyActive ? 'block' : 'none';
     }
 
-    function showMyCard() {
-        const selected = [...document.querySelectorAll('.need-tag.active')].map(t => t.textContent).join('  |  ');
-        alert(`بطاقتك جاهزة للعرض 🌸\n\n${selected}\n\nاعرض هذه الشاشة للموظف.`);
-    }
-
     // ===== تقييم الخدمة =====
     function rateStar(n) {
         const stars = document.querySelectorAll('.star');
@@ -1288,9 +1544,14 @@
         document.getElementById('ratingFeedback').style.display = 'block';
     }
 
+    function showMyCard() {
+        const selected = [...document.querySelectorAll('.need-tag.active')].map(t => t.textContent).join('\n');
+        notify(`${selected}\n\nاعرض هذه الشاشة للموظف بكل ثقة 🌸`, "🪪");
+    }
+
     function submitRating() {
         const stars = document.querySelectorAll('.star.lit').length;
-        alert(`شكراً لك من القلب 🌸\nتقييمك (${stars} نجوم) وصلنا وسيساعدنا نكون أفضل لك دائماً.`);
+        notify(`تقييمك (${stars} نجوم) وصلنا وسيساعدنا نكون أفضل لكِ دائماً، شكراً لكِ من القلب 🌸`, "⭐");
         document.querySelectorAll('.star').forEach(s => s.classList.remove('lit'));
         document.getElementById('ratingFeedback').style.display = 'none';
     }
